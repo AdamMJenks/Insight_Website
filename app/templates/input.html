@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>TopCop:Crime Intevention Analyzer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">TopCop</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+<br><br>
+
+  <div class="container">
+
+    <div class="starter-template text-center">
+        <h2>TopCop: Crime Intervention Analysis </h2>
+    </div>
+
+    <div class = "container text-center">
+      <h4>Please Enter The Following Information About Your Intervention  </h4>
+        <form  id="all" action="/output" method="GET">
+        <div class="form-group">
+          <div class="text-center">
+            <p></p>
+          <label for="Address">Address (centralized address)</label>
+          <div>
+          <input type="text-center" id="Address" name='Address' placeholder="Enter Address Here">
+          </div>
+          <div class="text-center">
+            <p></p>
+           <label for="Radius">Radius (>1km)</label>
+           <div>
+          <input type="text" id="Radius" name='Radius' placeholder="Enter Radius Here ">
+           </div>
+          </div>
+        </div>
+          
+        
+          <p></p>
+          <label for="all">Type of Crime Targeted</label>
+           <select class="form-control center-block" style ="width:140px" form="all" name="crime">
+              <option value="Violent">Violent Crime</option>
+              <option value="Nonviolent">Nonviolent Crime</option>
+              <option value="Theft">Theft</option>
+              <option value="Monetary">Monetary</option>
+              <option value="Vehicular">Vehicular</option>
+              <option value="Vice_Crimes">Vice Crimes </option>
+          </select>
+        
+           
+        
+          <p></p>
+          <label for="all">Year of Intervention Implementation</label>
+           <select class="form-control center-block" style ="width:140px" form="all" name="year">
+              
+              <option value="2012">2012</option>
+              <option value="2013">2013</option>
+              <option value="2014">2014</option>
+          </select>
+        
+        
+          <p></p>
+          <label for="all">Month of Intervention Implementation</label>
+           <select class="form-control center-block" style ="width:140px" form="all" name="month">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+           </select>
+        
+        
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+   
+        <button type="submit" class="btn btn-default btn-lg center-block">Analyze Crime Implementation</button>
+    </div>
+
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+  </div> <!-- /.container-->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

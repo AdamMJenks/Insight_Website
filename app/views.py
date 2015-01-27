@@ -10,6 +10,7 @@ import json
 import re
 import pprint
 import csv
+from Whole_sets import Monetary, Vice_Crimes, Violent, Nonviolent, Vehicular, Theft
 
 
 con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data')
@@ -37,6 +38,34 @@ def cities_output():
     Year = str(request.args.get('year'))
     Month = str(request.args.get('month'))
     
+    if Crime == "Vice_Crimes":
+	Crimetopass ="Vice Crime"
+    else:
+	Crimetopass = Crime+' Crime'
+    
+    if Year == "2012":
+	Month = float(Month)
+    elif Year == "2013":
+	Month = float(Month)
+	Month = Month + 12
+    elif Year == "2014":
+	Month = float(Month)
+	Month = Month + 24
+		
+    if Crime == "Violent":
+	WholeX_train,WholeY_train = Violent()
+    if Crime == "Nonviolent":
+	WholeX_train,WholeY_train = Nonviolent()
+    if Crime == "Theft":
+	WholeX_train,WholeY_train = Theft()
+    if Crime == "Monetary":
+	WholeX_train,WholeY_train = Monetary()
+    if Crime == "Vice_Crimes":
+	WholeX_train,WholeY_train = Vice_Crimes()
+    if Crime == "Vehicular":
+	WholeX_train,WholeY_train = Vehicular()
+	
+	
     Addresspassed = googleGeocoding(Address)
     
 
@@ -109,25 +138,48 @@ def cities_output():
     from sklearn.gaussian_process import GaussianProcess
     import matplotlib.pyplot as plt
     
+    def Model_Chosen(X,Y):
+	G = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1, nugget=0.0000005,corr='cubic')
+	G.fit(X,Y)
+	X_pred = np.linspace(X_train.min(), X_train.max())[:, None] 
+	y_pred, MSE = G.predict(X_pred, eval_MSE=True)
+	sigma = np.sqrt(MSE)
+	return X_pred, y_pred, sigma
     
-    G = GaussianProcess(theta0=1e-1,
-                         thetaL=1e-3, thetaU=1, nugget=0.0000005,corr='cubic')
-    G.fit(X_train,y_train)
+    def Model_All(X,Y):
+	G = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1, nugget=0.0000005,corr='cubic')
+	G.fit(X,Y)
+	X_pred = np.linspace(X_train.min(), X_train.max())[:, None] 
+	y_pred, MSE = G.predict(X_pred, eval_MSE=True)
+	sigma = np.sqrt(MSE)
+	return X_pred, y_pred, sigma
+
+    X_pred, y_pred, sigma = Model_Chosen(X_train,y_train)
     
-    
-    X_pred = np.linspace(X_train.min(), X_train.max())[:, None]
-    
-    y_pred, MSE = G.predict(X_pred, eval_MSE=True)
-    sigma = np.sqrt(MSE)
+    WholeX_pred, WholeY_pred, wholesigma = Model_All(WholeX_train,WholeY_train)
       
-    fig = plt.figure() 
-    plt.plot(X_train, y_train, 'r.', markersize=6, label='Observations')
+   
+    fig = plt.figure()
+    plt.plot(WholeX_train, WholeY_train, 'k.',markerfacecolor='none', markersize=8, label='Observations')
+    plt.plot(WholeX_pred, WholeY_pred, 'k:', label=u'Prediction')
+    plt.fill(np.concatenate([WholeX_pred, WholeX_pred[::-1]]),
+            np.concatenate([WholeY_pred - 1.9600 * wholesigma,
+                           (WholeY_pred + 1.9600 * wholesigma)[::-1]]),
+            alpha=.01, facecolor = 'red', ec='None', label='95% confidence interval')
+   
+   
+    plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
     plt.plot(X_pred, y_pred, 'k:', label=u'Prediction')
     plt.fill(np.concatenate([X_pred, X_pred[::-1]]),
             np.concatenate([y_pred - 1.9600 * sigma,
                            (y_pred + 1.9600 * sigma)[::-1]]),
-            alpha=.3, fc='k', ec='None', label='95% confidence interval')
-    plt.xlabel('Month')
+            alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
+    
+    xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
+    labels = ['0','1','2','3','4','5','6','7','8','9','10','11','12']
+    plt.xlabel("Month's After Implementation")
+    plt.xlim(Month,Month+12)
+    plt.xticks(xmarkers,labels)
     plt.ylabel('Relative Number of Incidents')
   
     import os.path
@@ -137,16 +189,6 @@ def cities_output():
 
     fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
-   
-    #cities = []
-    #for result in query_results:
-    #  cities.append(dict(name=result[0], country=result[1], population=result[2]))
-    #
-    ####call a function from a_Model package. note we are only pulling one result in the query
-    #pop_input = cities[0]['population']
-    #the_result = ModelIt(city, pop_input)
     
-    import time
-    time.sleep(5)
     return render_template("output.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-                           Crimecount = Crimecount, Crime = Crime)
+                           Crimecount = Crimecount, Crime = Crimetopass)

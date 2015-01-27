@@ -56,50 +56,31 @@
 
   <div class="container">
     <div class="starter-template text-center">
-        <h2>Here's How Your Intervention Stacked Up</h2>
+        <h2>Here's How Your Intervention Stacked Up Against All of Boston</h2>
     </div>
     
   </div> <!-- /.container-->
-  
-    <div class="container">
-      <div class="starter-template">
-        <h3>Within {{Radius}} km, the have been {{Length}} crimes over the last 3 years!</h3>
-        <h3>The number of each crime:</h3>
-        <div class= "container">
-          <h4>{{Crime}} Crimes: {{Crimecount}}</h4>
           
-        </div>
-      </div>
-    
-      
       <div class="text-center">
         
-       <h3> Here is your crime trend over the past 3 years  </h3>
+       <h3> {{Crime}} trend over <br>
+       the 12 months post crime implementation</h3>
       </div>
  
       <div class= "media">
        <div class = "media-center">
          <img class="center-block" src = "{{url_for('static',filename='img/Position_model_image.png')}}" width = "450" height = "300" align = "middle">
-  
-       </div>    
+       </div>
       </div>
-  
-    
-    
-    
-     <div class="starter-template">
-        <h3>Here is Boston's total crime trend over the past 3 years</h3>
-        
-     </div>
-    
-    <div class= "media">
-      <div class = "media-center">
-       <a>
-         <img class="media-object" src = "{{url_for('static',filename='img/All_Boston_crime.png')}}" width = "450" height="300" 
-       </a>
+      
+      <div class = "start-template text-center">
+        <p>Blue indicates the confidence for your selected area's crime rates<br>
+        Red indicates the confidence for all of Boston's crime rates</p>
       </div>
-    </div>
     
+     
+  
+  
       <!--<table class="table table-hover">
       <tr><th>Name</th><th>Country</th><th>Population</th></tr>
       {% for city in cities %}

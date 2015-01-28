@@ -58,15 +58,15 @@ def crime_output():
 	
     Addresspassed = googleGeocoding(Address)
     
-
+    
     Local_jsonStr = str(Addresspassed)
     StartLoccoord = Local_jsonStr.find("u'location'")
     EndLoccoord = Local_jsonStr.find("'address_components'")
-
+    
     Coordstring = Local_jsonStr[StartLoccoord:EndLoccoord]
-
+    
     Coordinates = re.findall(r"[-+]?\d*\.\d+|\d+",Coordstring)
-
+    
     Latitude = str(Coordinates[0])
     Longitude = str(Coordinates[1])
        
@@ -104,7 +104,7 @@ def crime_output():
     
     Crimecount = crimecounts.iloc[0]['ReptDist']
     
-
+    
     Normalizingnumber = len(Crimetoanalyze.index)
     
     grouped = Crimetoanalyze.groupby([lambda x: x.year,lambda x: x.month])
@@ -131,12 +131,12 @@ def crime_output():
     import matplotlib.pyplot as plt
     
     
-    RadiusG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=2,nugget = 0.0000001,corr='cubic')
+    RadiusG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1,nugget = 0.00000005,corr='cubic')
     RadiusG.fit(X_train,y_train) 
     modely_pred, modelMSE = RadiusG.predict(xrand, eval_MSE=True)
     sigma = np.sqrt(modelMSE)
     
-    AllG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=2,nugget = 0.0000001,corr='cubic')
+    AllG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1,nugget = 0.00000005,corr='cubic')
     AllG.fit(WholeX_train,WholeY_train) 
     WholeY_pred, wholeMSE = AllG.predict(wholexrand, eval_MSE=True)
     wholesigma = np.sqrt(wholeMSE)
@@ -160,26 +160,24 @@ def crime_output():
     #xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
     #labels = ['0','1','2','3','4','5','6','7','8','9','10','11','12']
     plt.xlabel("Month's After Implementation")
-    plt.ylim(0,0.05)
-    plt.xlim(Month,Month+12)
+   
+    
     #plt.xticks(xmarkers,labels)
     plt.ylabel('Relative Number of Incidents')
-    
-    
-    Try,Try2 = RadiusG.predict(24,eval_MSE=True)
-    upper = Try + 1.9600 * np.sqrt(Try2)
-    lower = Try - 1.9600 * np.sqrt(Try2)
     
     
     monthtoprint = Month
     monthslower = []
     monthshigher = []
     
-#    for i in range(int(Month),len(X_train)):
-#	if (WholeY_train[i] +1.9600 * wholesigma[i]) < (y_pred[i] - 1.9600 * sigma[i]):
-#		monthshigher.append(WholeX_train[i])
-#	elif (WholeY_train[i] - 1.9600 * wholesigma[i]) > (y_pred[i] + 1.9600 * sigma[i]):
-#		monthslower.append(WholeX_train[i])
+    for i in range(int(Month),len(Reindex_counts)):
+	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
+	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
+	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
+		monthshigher.append(i)
+	if (Radpred + 1.96 * np.sqrt(Radmse)) < (Allpred - 1.06 * np.sqrt(Allmse)):
+		monthslower.append(i)
+	
 
     
 		
@@ -193,5 +191,5 @@ def crime_output():
     
     
     return render_template("output.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-                           Crimecount = Crimecount, Crime = Crimetopass, Try=Try, Upper = upper,
-			   Lower = lower)
+                           Crimecount = Crimecount, Crime = Crimetopass, Higher = monthshigher,
+			   Lower = monthslower)

@@ -16,22 +16,12 @@ from Whole_sets import Monetary, Vice_Crimes, Violent, Nonviolent, Vehicular, Th
 con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data')
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-	return render_template("index.html",
-        title = 'Home',
-        )
-
-
 @app.route('/input')
-def cities_input():
+def crime_input():
   return render_template("input.html")
 
 @app.route('/output')
-
-
-def cities_output():
+def crime_output():
     Address = request.args.get('Address')
     Radius = request.args.get('Radius')
     Crime = str(request.args.get('crime'))
@@ -53,17 +43,17 @@ def cities_output():
 	Month = Month + 24
 		
     if Crime == "Violent":
-	WholeX_train,WholeY_train = Violent()
+	WholeX_train,WholeY_train,wholexrand = Violent()
     if Crime == "Nonviolent":
-	WholeX_train,WholeY_train = Nonviolent()
+	WholeX_train,WholeY_train,wholexrand = Nonviolent()
     if Crime == "Theft":
-	WholeX_train,WholeY_train = Theft()
+	WholeX_train,WholeY_train,wholexrand = Theft()
     if Crime == "Monetary":
-	WholeX_train,WholeY_train = Monetary()
+	WholeX_train,WholeY_train,wholexrand = Monetary()
     if Crime == "Vice_Crimes":
-	WholeX_train,WholeY_train = Vice_Crimes()
+	WholeX_train,WholeY_train,wholexrand = Vice_Crimes()
     if Crime == "Vehicular":
-	WholeX_train,WholeY_train = Vehicular()
+	WholeX_train,WholeY_train,wholexrand = Vehicular()
 	
 	
     Addresspassed = googleGeocoding(Address)
@@ -134,53 +124,65 @@ def cities_output():
     X_train = np.transpose(x)
     y_train = np.transpose(y)
     
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
+    
     
     from sklearn.gaussian_process import GaussianProcess
     import matplotlib.pyplot as plt
     
-    def Model_Chosen(X,Y):
-	G = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1, nugget=0.0000005,corr='cubic')
-	G.fit(X,Y)
-	X_pred = np.linspace(X_train.min(), X_train.max())[:, None] 
-	y_pred, MSE = G.predict(X_pred, eval_MSE=True)
-	sigma = np.sqrt(MSE)
-	return X_pred, y_pred, sigma
     
-    def Model_All(X,Y):
-	G = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=1, nugget=0.0000005,corr='cubic')
-	G.fit(X,Y)
-	X_pred = np.linspace(X_train.min(), X_train.max())[:, None] 
-	y_pred, MSE = G.predict(X_pred, eval_MSE=True)
-	sigma = np.sqrt(MSE)
-	return X_pred, y_pred, sigma
-
-    X_pred, y_pred, sigma = Model_Chosen(X_train,y_train)
+    RadiusG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=2,nugget = 0.0000001,corr='cubic')
+    RadiusG.fit(X_train,y_train) 
+    modely_pred, modelMSE = RadiusG.predict(xrand, eval_MSE=True)
+    sigma = np.sqrt(modelMSE)
     
-    WholeX_pred, WholeY_pred, wholesigma = Model_All(WholeX_train,WholeY_train)
+    AllG = GaussianProcess(theta0=1e-1,thetaL=1e-3, thetaU=2,nugget = 0.0000001,corr='cubic')
+    AllG.fit(WholeX_train,WholeY_train) 
+    WholeY_pred, wholeMSE = AllG.predict(wholexrand, eval_MSE=True)
+    wholesigma = np.sqrt(wholeMSE)
+	
       
    
     fig = plt.figure()
     plt.plot(WholeX_train, WholeY_train, 'k.',markerfacecolor='none', markersize=8, label='Observations')
-    plt.plot(WholeX_pred, WholeY_pred, 'k:', label=u'Prediction')
-    plt.fill(np.concatenate([WholeX_pred, WholeX_pred[::-1]]),
+    plt.fill(np.concatenate([wholexrand, wholexrand[::-1]]),
             np.concatenate([WholeY_pred - 1.9600 * wholesigma,
                            (WholeY_pred + 1.9600 * wholesigma)[::-1]]),
-            alpha=.01, facecolor = 'red', ec='None', label='95% confidence interval')
+            alpha=.01, facecolor = 'red',ec='None', label='95% confidence interval')
    
    
     plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
-    plt.plot(X_pred, y_pred, 'k:', label=u'Prediction')
-    plt.fill(np.concatenate([X_pred, X_pred[::-1]]),
-            np.concatenate([y_pred - 1.9600 * sigma,
-                           (y_pred + 1.9600 * sigma)[::-1]]),
+    plt.fill(np.concatenate([xrand, xrand[::-1]]),
+            np.concatenate([modely_pred - 1.9600 * sigma,
+                           (modely_pred + 1.9600 * sigma)[::-1]]),
             alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
     
-    xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
-    labels = ['0','1','2','3','4','5','6','7','8','9','10','11','12']
+    #xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
+    #labels = ['0','1','2','3','4','5','6','7','8','9','10','11','12']
     plt.xlabel("Month's After Implementation")
+    plt.ylim(0,0.05)
     plt.xlim(Month,Month+12)
-    plt.xticks(xmarkers,labels)
+    #plt.xticks(xmarkers,labels)
     plt.ylabel('Relative Number of Incidents')
+    
+    
+    Try,Try2 = RadiusG.predict(24,eval_MSE=True)
+    upper = Try + 1.9600 * np.sqrt(Try2)
+    lower = Try - 1.9600 * np.sqrt(Try2)
+    
+    
+    monthtoprint = Month
+    monthslower = []
+    monthshigher = []
+    
+#    for i in range(int(Month),len(X_train)):
+#	if (WholeY_train[i] +1.9600 * wholesigma[i]) < (y_pred[i] - 1.9600 * sigma[i]):
+#		monthshigher.append(WholeX_train[i])
+#	elif (WholeY_train[i] - 1.9600 * wholesigma[i]) > (y_pred[i] + 1.9600 * sigma[i]):
+#		monthslower.append(WholeX_train[i])
+
+    
+		
   
     import os.path
     if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
@@ -191,4 +193,5 @@ def cities_output():
     
     
     return render_template("output.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-                           Crimecount = Crimecount, Crime = Crimetopass)
+                           Crimecount = Crimecount, Crime = Crimetopass, Try=Try, Upper = upper,
+			   Lower = lower)

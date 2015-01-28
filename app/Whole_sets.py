@@ -29,8 +29,10 @@ def Nonviolent():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
 
-    return WholeX_train,WholeY_train
+    return WholeX_train,WholeY_train, xrand
 
 def Theft():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
@@ -52,8 +54,10 @@ def Theft():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
-
-    return WholeX_train,WholeY_train
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
+    
+    return WholeX_train,WholeY_train, xrand
 
 def Violent():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
@@ -75,8 +79,10 @@ def Violent():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
 
-    return WholeX_train,WholeY_train
+    return WholeX_train,WholeY_train,xrand
 
 def Vehicular():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
@@ -98,8 +104,10 @@ def Vehicular():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
 
-    return WholeX_train,WholeY_train
+    return WholeX_train,WholeY_train,xrand
 
 def Vice_Crimes():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
@@ -121,8 +129,10 @@ def Vice_Crimes():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
 
-    return WholeX_train,WholeY_train
+    return WholeX_train,WholeY_train,xrand
 
 def Monetary():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
@@ -144,5 +154,7 @@ def Monetary():
 
     WholeX_train = np.transpose(x)
     WholeY_train = np.transpose(y)
+    
+    xrand = np.atleast_2d(np.linspace(0, len(Reindex_counts), 1000)).T
 
-    return WholeX_train,WholeY_train
+    return WholeX_train,WholeY_train,xrand

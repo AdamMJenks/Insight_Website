@@ -103,6 +103,10 @@ def Implement(Address,Radius,Crime,Year,Month):
     
     Crimecount = crimecounts.iloc[0]['ReptDist']
     
+    Latlong = CrimeSelected[['Incident','lat','lng']]
+   
+    LatLongList = map(list, Latlong.values)
+    
     
     Normalizingnumber = len(Crimetoanalyze.index)
     
@@ -140,20 +144,19 @@ def Implement(Address,Radius,Crime,Year,Month):
     WholeY_pred, wholeMSE = AllG.predict(wholexrand, eval_MSE=True)
     wholesigma = np.sqrt(wholeMSE)
 	
-      
    
     fig = plt.figure()
     plt.plot(WholeX_train, WholeY_train, 'k.',markerfacecolor='none', markersize=8, label='Observations')
     plt.fill(np.concatenate([wholexrand, wholexrand[::-1]]),
-            np.concatenate([WholeY_pred - 1.9600 * wholesigma,
-                           (WholeY_pred + 1.9600 * wholesigma)[::-1]]),
+            np.concatenate([WholeY_pred - wholesigma,
+                           (WholeY_pred + wholesigma)[::-1]]),
             alpha=.01, facecolor = 'red',ec='None', label='95% confidence interval')
    
    
     plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
     plt.fill(np.concatenate([xrand, xrand[::-1]]),
-            np.concatenate([modely_pred - 1.9600 * sigma,
-                           (modely_pred + 1.9600 * sigma)[::-1]]),
+            np.concatenate([modely_pred - sigma,
+                           (modely_pred + sigma)[::-1]]),
             alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
     
     xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
@@ -171,7 +174,7 @@ def Implement(Address,Radius,Crime,Year,Month):
     Dicthigher = []
     Dictlower = []
     
-    for i in range(int(Month),len(Reindex_counts)):
+    for i in range(int(Month),37):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
 	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
@@ -180,11 +183,19 @@ def Implement(Address,Radius,Crime,Year,Month):
 		monthslower.append(i)
 		
     for i in range (0,len(monthshigher)):
-	Dicthigher.append(Monthdict.get(monthshigher[i]))
-	
+	Dicthigher.append(Monthdict.get(monthshigher[i]))	
 
     for i in range (0,len(monthslower)):
-	Dictlower.append(Monthdict.get(monthslower[i]))	
+	Dictlower.append(Monthdict.get(monthslower[i]))
+    
+    if not monthslower:
+	monthslower.append("None: Your implementation was ineffective")
+    
+    if not monthshigher:
+	monthshigher.append("Crime has not been higher than Boston's average rate")
+    
+    
+
 
   
     import os.path
@@ -194,5 +205,6 @@ def Implement(Address,Radius,Crime,Year,Month):
 
     fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
-    return render_template("output_implementation.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-        Crimecount = Crimecount, Crime = Crimetopass, Higher = Dicthigher,Lower = Dictlower)
+    return render_template("output_implementation.html",Longitude = Longitude,Latitude = Latitude,
+	Length=Crimelen,Radius = Radius, Crimecount = Crimecount, Crime = Crimetopass,
+	Higher = Dicthigher,Lower = Dictlower, LatLongList = LatLongList)

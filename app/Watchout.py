@@ -146,15 +146,15 @@ def Watchout(Address,Radius,Crime,Year,Month):
     fig = plt.figure()
     plt.plot(WholeX_train, WholeY_train, 'k.',markerfacecolor='none', markersize=8, label='Observations')
     plt.fill(np.concatenate([wholexrand, wholexrand[::-1]]),
-            np.concatenate([WholeY_pred - 1.9600 * wholesigma,
-                           (WholeY_pred + 1.9600 * wholesigma)[::-1]]),
+            np.concatenate([WholeY_pred - wholesigma,
+                           (WholeY_pred + wholesigma)[::-1]]),
             alpha=.01, facecolor = 'red',ec='None', label='95% confidence interval')
    
    
     plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
     plt.fill(np.concatenate([xrand, xrand[::-1]]),
-            np.concatenate([modely_pred - 1.9600 * sigma,
-                           (modely_pred + 1.9600 * sigma)[::-1]]),
+            np.concatenate([modely_pred - sigma,
+                           (modely_pred + sigma)[::-1]]),
             alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
     
     
@@ -170,7 +170,7 @@ def Watchout(Address,Radius,Crime,Year,Month):
     Dicthigher = []
     Dictlower = []
     
-    for i in range(int(Month),len(Reindex_counts)):
+    for i in range(1,36):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
 	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
@@ -183,9 +183,65 @@ def Watchout(Address,Radius,Crime,Year,Month):
 	
 
     for i in range (0,len(monthslower)):
-	Dictlower.append(Monthdict.get(monthslower[i]))	
+	Dictlower.append(Monthdict.get(monthslower[i]))
+    
+    Spring = [3,4,5,15,16,17,27,28,29]
+    Summer = [6,7,8,18,19,20,30,31,32]
+    Fall = [9,10,11,21,22,23,33,34,35]
+    Winter = [0,1,2,12,13,14,24,25,26,36]
+    
+    FallScore = 0
+    SummerScore = 0
+    SpringScore = 0
+    WinterScore = 0
+    
+    HigherSeasons = []
+    LowerSeasons = []
+    
+    for i in range (0,len(monthshigher)):
+	if monthshigher[i] in (Spring):
+	    SpringScore += 1
+	if monthshigher[i] in (Fall):
+	    FallScore += 1
+	if monthshigher[i] in (Summer):
+	    SummerScore += 1
+	if monthshigher[i] in (Winter):
+	    WinterScore += 1
+    
+    for i in range (0,len(monthslower)):
+	if monthslower[i] in (Spring):
+	    SpringScore += -1
+	if monthslower[i] in (Fall):
+	    FallScore += -1
+	if monthslower[i] in (Summer):
+	    SummerScore += -1
+	if monthslower[i] in (Winter):
+	    WinterScore += -1
+	
+    if SpringScore < 0:
+	LowerSeasons.append('Spring')
+    if FallScore < 0:
+	LowerSeasons.append('Fall')
+    if SummerScore < 0:
+	LowerSeasons.append('Summer')
+    if WinterScore < 0:
+	LowerSeasons.append('Winter')
+    
+    if SpringScore > 0:
+	HigherSeasons.append('Spring')
+    if FallScore > 0:
+	HigherSeasons.append('Fall')
+    if SummerScore > 0:
+	HigherSeasons.append('Summer')
+    if WinterScore > 0:
+	HigherSeasons.append('Winter')
 
-  
+    if not LowerSeasons:
+	LowerSeasons.append("Your crime's rate is, on average, not lower than Boston's Average")
+    
+    if not HigherSeasons:
+	HigherSeasons.append("Your crime's rate is, on average, not higher than Boston's Average")
+    
     import os.path
     if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
         os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
@@ -194,5 +250,7 @@ def Watchout(Address,Radius,Crime,Year,Month):
     fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
     
-    return render_template("output_implementation.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-        Crimecount = Crimecount, Crime = Crimetopass, Higher = Dicthigher, Lower = Dictlower)
+    return render_template("output_watchout.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
+        Crimecount = Crimecount, Crime = Crimetopass, Higher = Dicthigher, Lower = Dictlower,
+	HigherSeasons = HigherSeasons, LowerSeasons = LowerSeasons, FallScore = FallScore,
+	SpringScore = SpringScore, SummerScore = SummerScore, WinterScore = WinterScore)

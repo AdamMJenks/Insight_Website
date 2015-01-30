@@ -104,6 +104,10 @@ def Watchout(Address,Radius,Crime,Year,Month):
     
     Crimecount = crimecounts.iloc[0]['ReptDist']
     
+    Latlong = CrimeSelected[['Incident','lat','lng']]
+   
+    LatLongList = map(list, Latlong.values)
+    
     
     Normalizingnumber = len(Crimetoanalyze.index)
     
@@ -250,7 +254,8 @@ def Watchout(Address,Radius,Crime,Year,Month):
     fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
     
-    return render_template("output_watchout.html",longitude = Longitude,Length=Crimelen,Radius = Radius,
-        Crimecount = Crimecount, Crime = Crimetopass, Higher = Dicthigher, Lower = Dictlower,
-	HigherSeasons = HigherSeasons, LowerSeasons = LowerSeasons, FallScore = FallScore,
-	SpringScore = SpringScore, SummerScore = SummerScore, WinterScore = WinterScore)
+    return render_template("output_watchout.html",Longitude = Longitude,Latitude=Latitude,
+	Length=Crimelen,Radius = Radius,Crimecount = Crimecount, Crime = Crimetopass,
+	Higher = Dicthigher, Lower = Dictlower,	HigherSeasons = HigherSeasons,
+	LowerSeasons = LowerSeasons, FallScore = FallScore, SpringScore = SpringScore,
+	SummerScore = SummerScore, WinterScore = WinterScore, LatLongList=LatLongList)

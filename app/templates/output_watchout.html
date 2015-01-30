@@ -86,27 +86,47 @@
       
       <div class = "start-template text-center">
         <p><font color = 'Blue'>Blue</font> indicates the confidence for your selected area's crime rates<br>
-        <font color = 'Red'>Red</font> indicates the confidence for all of Boston's crime rates</p>
+        <font color = 'Red'>Red</font> indicates the confidence for all of Boston's crime rates</p> 
+        </p>
       </div>
-    
-     
+      
+      <div class = "start-template text-center" style = 'margin-bottom:30px'>
+        <h4> Here Are All The {{Crime}} Incidents Over the Last 3 Years</h4>
+      </div>
   
   
-      <!--<table class="table table-hover">
-      <tr><th>Name</th><th>Country</th><th>Population</th></tr>
-      {% for city in cities %}
-      <tr><td>{{ city['name'] }}</td><td>{{ city['country']}}</td><td> {{ city['population'] }}</td></tr>
-      {% endfor %}
-      </table>
+      <link 
+        rel="stylesheet" 
+        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
 
 
-     </div><!-- /.container -->
+    <div id="map" style="width: 600px; height: 400px; margin: auto"></div>
 
-    <!--<div class="container">
-      <div class="starter-template">
-        <h3>Another Result:</h3>
-        <p class="lead">Now we've taken the input and called a function from your package.<br>The result is {{the_result}}</p>
-      </div>-->
+    <script
+        src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+    </script>
+
+    <script>
+
+	var planes = {{LatLongList|tojson}};
+
+        var map = L.map('map').setView([{{Latitude}},{{Longitude}}], 14);
+        mapLink = 
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18,
+            }).addTo(map);
+
+		for (var i = 0; i < planes.length; i++) {
+			marker = new L.marker([planes[i][1],planes[i][2]])
+				.bindPopup(planes[i][0])
+				.addTo(map);
+		}
+               
+    </script>
 
 
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

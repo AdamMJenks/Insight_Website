@@ -56,12 +56,12 @@
   <div class="container">
 
     <div class="starter-template text-center">
-        <h2>TopCop: Crime Intervention Analysis </h2>
+        <h2>TopCop: Crime Analysis Tool</h2>
     </div>
 
     <div class = "container text-center">
-      <h4>Please Enter The Following Information About Your Implementation  </h4>
-        <form  id="all" action="/output" method="GET">
+      <h4>Please Enter The Following Information About Your Area of Interest </h4>
+        <form  id="all" action = "/watchout" method="GET">
         <div class="form-group">
           <div class="text-center">
             <p></p>
@@ -71,7 +71,7 @@
           </div>
           <div class="text-center">
             <p></p>
-           <label for="Radius">Radius (>1km)</label>
+           <label for="Radius">Radius of Area (>2 km)</label>
            <div>
           <input type="text" id="Radius" name='Radius' placeholder="Enter Radius Here ">
            </div>
@@ -90,49 +90,14 @@
               <option value="Vice_Crimes">Vice Crimes </option>
           </select>
         
-           
-        
-          <p></p>
-          <label for="all">Year of Intervention Implementation</label>
-           <select class="form-control center-block" style ="width:140px" form="all" name="year">
-              
-              <option value="2012">2012</option>
-              <option value="2013">2013</option>
-              <option value="2014">2014</option>
-          </select>
-        
-        
-          <p></p>
-          <label for="all">Month of Intervention Implementation</label>
-           <select class="form-control center-block" style ="width:140px" form="all" name="month">
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-           </select>
-        
-          <p></p>
-          <label for="all">What Are You Looking For?</label>
-           <select class="form-control center-block" style ="width:140px" form="all" name="implementation">
-              <option value="1">What Should I Watch Out For?</option>
-              <option value="2">Did My Implementation Work?</option>
-
-           </select>
         
       <p></p>
       <p></p>
       <p></p>
       <p></p>
    
-        <button type="submit" class="btn btn-default btn-lg center-block">Analyze Crime Implementation</button>
+        <button type="submit" class="btn btn-default btn-lg center-block" style = 'margin-top: 50px'>
+            Click To Find Out</button>
     </div>
 
       </form>

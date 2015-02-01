@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-def Watchout(Address,Radius,Crime,Year,Month):
+def Watchout(Address,Radius,Crime):
     
     from flask import render_template, request
     from app import app
@@ -24,15 +24,7 @@ def Watchout(Address,Radius,Crime,Year,Month):
     else:
 	Crimetopass = Crime+' Crime'
     
-    if Year == "2012":
-	Month = float(Month)
-    elif Year == "2013":
-	Month = float(Month)
-	Month = Month + 12
-    elif Year == "2014":
-	Month = float(Month)
-	Month = Month + 24
-		
+
     if Crime == "Violent":
 	WholeX_train,WholeY_train,wholexrand = Violent()
     if Crime == "Nonviolent":
@@ -167,7 +159,7 @@ def Watchout(Address,Radius,Crime,Year,Month):
     plt.ylabel('Relative Number of Incidents')
     
     
-    monthtoprint = Month
+    
     monthslower = []
     monthshigher = []
     
@@ -247,11 +239,11 @@ def Watchout(Address,Radius,Crime,Year,Month):
 	HigherSeasons.append("Your crime's rate is, on average, not higher than Boston's Average")
     
     import os.path
-    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
-        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    if os.path.exists("Position_model_image.png"):
+        os.remove("Position_model_image.png")
     
 
-    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    fig.savefig("Position_model_image.png")
     
     
     return render_template("output_watchout.html",Longitude = Longitude,Latitude=Latitude,

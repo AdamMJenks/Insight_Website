@@ -41,7 +41,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/input">TopCop</a>
+          <a class="navbar-brand" href="/starter">TopCop</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -64,11 +64,11 @@
         <p></p>
         <h3>Average Increased Rates During The:</h3>
         <ul class = 'list-unstyled'>{% for name in HigherSeasons %}
-        <li><h4><font color = 'Blue'>{{name}}</font></h4></li>
+        <li><h4><font color = 'yellow'>{{name}}</font></h4></li>
         {% endfor %}</ul>
         <h3>Average Decreased Rates During The:</h3>
         <ul class = 'list-unstyled'>{% for lowername in LowerSeasons %}
-        <li><h4><font color = 'Red'>{{lowername}}</font></h4></li>
+        <li><h4><font color = 'yellow'>{{lowername}}</font></h4></li>
         {% endfor %}</ul>
     </div>
     
@@ -80,7 +80,7 @@
  
       <div class= "media">
        <div class = "media-center">
-         <img class="center-block" src = "{{url_for('return_image',filename='img/Position_model_image.png')}}" width = "450" height = "300" align = "middle">
+         <img class="center-block" src = "{{url_for('return_image',filename='Position_model_image.png')}}" width = "450" height = "300" align = "middle">
        </div>
       </div>
       

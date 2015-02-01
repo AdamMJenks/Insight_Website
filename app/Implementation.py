@@ -199,11 +199,11 @@ def Implement(Address,Radius,Crime,Year,Month):
 
   
     import os.path
-    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
-        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    if os.path.exists("Position_model_image.png"):
+        os.remove("Position_model_image.png")
     
 
-    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    fig.savefig("Position_model_image.png")
     
     return render_template("output_implementation.html",Longitude = Longitude,Latitude = Latitude,
 	Length=Crimelen,Radius = Radius, Crimecount = Crimecount, Crime = Crimetopass,

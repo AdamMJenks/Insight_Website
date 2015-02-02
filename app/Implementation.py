@@ -98,8 +98,8 @@ def Implement(Address,Radius,Crime,Year,Month):
     Crimelen = len(CrimeSelected.index)
     
     Crimetoanalyze= CrimeSelected[['Incident','date']].set_index('date')
-    Selectedcrime = CrimeSelected.groupby(['Incident'])
-    crimecounts = Selectedcrime.count(['ReptDist'])
+    Selectedcrime = CrimeSelected.groupby('Incident')
+    crimecounts = Selectedcrime.count(axis=0)
     
     Crimecount = crimecounts.iloc[0]['ReptDist']
     
@@ -131,6 +131,8 @@ def Implement(Address,Radius,Crime,Year,Month):
     
     
     from sklearn.gaussian_process import GaussianProcess
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     
     
@@ -192,18 +194,18 @@ def Implement(Address,Radius,Crime,Year,Month):
 	Dictlower.append("None: Your implementation was ineffective")
     
     if not Dicthigher:
-	Dicthigher.append("Crime has not been higher than Boston's average rate")
+	Dicthigher.append("Your crime remained at Boston's average")
     
     
 
 
   
     import os.path
-    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
-        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    if os.path.exists("./app/static/img/Position_model_image.png"):
+        os.remove("./app/static/img/Position_model_image.png")
     
 
-    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    fig.savefig("./app/static/img/Position_model_image.png")
     
     return render_template("output_implementation.html",Longitude = Longitude,Latitude = Latitude,
 	Length=Crimelen,Radius = Radius, Crimecount = Crimecount, Crime = Crimetopass,

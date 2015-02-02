@@ -90,8 +90,8 @@ def Watchout(Address,Radius,Crime):
     Crimelen = len(CrimeSelected.index)
     
     Crimetoanalyze= CrimeSelected[['Incident','date']].set_index('date')
-    Selectedcrime = CrimeSelected.groupby(['Incident'])
-    crimecounts = Selectedcrime.count(['ReptDist'])
+    Selectedcrime = CrimeSelected.groupby('Incident')
+    crimecounts = Selectedcrime.count(axis=0)
     
     Crimecount = crimecounts.iloc[0]['ReptDist']
     
@@ -123,6 +123,8 @@ def Watchout(Address,Radius,Crime):
     
     
     from sklearn.gaussian_process import GaussianProcess
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     
     
@@ -168,9 +170,9 @@ def Watchout(Address,Radius,Crime):
     for i in range(1,36):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
-	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
+	if (Radpred - 1.5 * np.sqrt(Radmse)) > (Allpred + 1.5 * np.sqrt(Allmse)):
 		monthshigher.append(i)
-	if (Radpred + 1.96 * np.sqrt(Radmse)) < (Allpred - 1.96 * np.sqrt(Allmse)):
+	if (Radpred + 1.5 * np.sqrt(Radmse)) < (Allpred - 1.5 * np.sqrt(Allmse)):
 		monthslower.append(i)
 
     
@@ -226,18 +228,18 @@ def Watchout(Address,Radius,Crime):
 	HigherSeasons.append('Winter')
 
     if not LowerSeasons:
-	LowerSeasons.append("Your crime's rate is, on average, not lower than Boston's Average")
+	LowerSeasons.append("Your crime's rate is no lower than Boston's Average")
     
     if not HigherSeasons:
-	HigherSeasons.append("Your crime's rate is, on average, not higher than Boston's Average")
+	HigherSeasons.append("Your crime's rate is no higher than Boston's Average")
     
     
     import os.path
-    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
-        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    if os.path.exists("./app/static/img/Position_model_image.png"):
+        os.remove("./app/static/img/Position_model_image.png")
     
 
-    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    fig.savefig("./app/static/img/Position_model_image.png")
     
     
     

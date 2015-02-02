@@ -896,6 +896,7 @@ th {
 }
 html {
   font-size: 10px;
+  background-image: url('/Users/Jenks/Desktop/Insight_Website/app/static/img/police.png');
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

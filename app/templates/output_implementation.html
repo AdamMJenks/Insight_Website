@@ -59,16 +59,15 @@
 
   <div class="container">
     <div class="starter-template text-center">
-        <h2>Here's How Your Intervention Stacked Up</h2>
         <p></p>
         <p></p>
         <p></p>
-        <h3>Your {{Crime}} Reduction Was Successful In:</h3>
+        <h3>{{Crime}} Reduction Was Successful In:</h3>
         
         <ul class = 'list-unstyled'>{% for name in Lower %}
         <li><h4><font color = 'yellow'>{{name}}</font></h4></li>
         {% endfor %}</ul>
-        <h3>Your {{Crime}} Was Still Greater Than Boston In:</h3>
+        <h3>Average {{Crime}} Was Still Greater In:</h3>
         <ul class = 'list-unstyled'>{% for lowername in Higher %}
         <li><h4><font color = 'yellow'>{{lowername}}</font></h4></li>
         {% endfor %}</ul>
@@ -76,12 +75,7 @@
     
   </div> <!-- /.container-->
           
-      <div class="text-center">
-        
-       <h3> {{Crime}} trend over <br>
-       the 12 months post crime implementation</h3>
-       
-      </div>
+  
  
       <div class= "media">
        <div class = "media-center">
@@ -90,6 +84,7 @@
       </div>
       
       <div class = "start-template text-center" style = 'margin-bottom:50px'>
+        <h5>{{Crime}} trend over the 12 months post crime implementation</h5>
         <p><font color = 'Blue'>Blue</font> indicates the confidence for your selected area's crime rates<br>
         <font color = 'Red'>Red</font> indicates the confidence for all of Boston's crime rates<br>
         </p>

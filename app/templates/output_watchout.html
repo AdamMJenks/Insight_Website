@@ -58,25 +58,22 @@
 
   <div class="container">
     <div class="starter-template text-center">
-        <h2>Watch out, {{Crime}} In Your Area Is Prone To:</h2>
+        
         <p></p>
         <p></p>
         <p></p>
-        <h3>Average Increased Rates During The:</h3>
+        <h3>Increased Rates During The:</h3>
         <ul class = 'list-unstyled'>{% for name in HigherSeasons %}
         <li><h4><font color = 'yellow'>{{name}}</font></h4></li>
         {% endfor %}</ul>
-        <h3>Average Decreased Rates During The:</h3>
+        <h3>Decreased Rates During The:</h3>
         <ul class = 'list-unstyled'>{% for lowername in LowerSeasons %}
         <li><h4><font color = 'yellow'>{{lowername}}</font></h4></li>
         {% endfor %}</ul>
     </div>
     
   </div> <!-- /.container-->
-          
-      <div class="text-center">     
-       <h3> {{Crime}} Trend Over Previous 3 Years</h3>
-      </div>
+    
  
       <div class= "media">
        <div class = "media-center">
@@ -85,6 +82,7 @@
       </div>
       
       <div class = "start-template text-center">
+        <h5>{{Crime}} trend over the 12 months post crime implementation</h5>
         <p><font color = 'Blue'>Blue</font> indicates the confidence for your selected area's crime rates<br>
         <font color = 'Red'>Red</font> indicates the confidence for all of Boston's crime rates</p> 
         </p>

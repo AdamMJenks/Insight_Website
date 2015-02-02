@@ -2,7 +2,6 @@ from flask import render_template, request, make_response
 from app import app
 import pymysql as mdb
 from Geocode import googleGeocoding
-
 from Implementation import Implement
 from Watchout import Watchout
 
@@ -49,5 +48,4 @@ def watch():
 	Output = Watchout(Address,Radius,Crime)
 	
 	return Output
-
 

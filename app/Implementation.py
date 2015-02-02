@@ -177,9 +177,9 @@ def Implement(Address,Radius,Crime,Year,Month):
     for i in range(int(Month),37):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
-	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
+	if (Radpred - 1.5 * np.sqrt(Radmse)) > (Allpred + 1.5 * np.sqrt(Allmse)):
 		monthshigher.append(i)
-	if (Radpred + 1.96 * np.sqrt(Radmse)) < (Allpred - 1.06 * np.sqrt(Allmse)):
+	if (Radpred + 1.5 * np.sqrt(Radmse)) < (Allpred - 1.5 * np.sqrt(Allmse)):
 		monthslower.append(i)
 		
     for i in range (0,len(monthshigher)):
@@ -188,22 +188,22 @@ def Implement(Address,Radius,Crime,Year,Month):
     for i in range (0,len(monthslower)):
 	Dictlower.append(Monthdict.get(monthslower[i]))
     
-    if not monthslower:
-	monthslower.append("None: Your implementation was ineffective")
+    if not Dictlower:
+	Dictlower.append("None: Your implementation was ineffective")
     
-    if not monthshigher:
-	monthshigher.append("Crime has not been higher than Boston's average rate")
+    if not Dicthigher:
+	Dicthigher.append("Crime has not been higher than Boston's average rate")
     
     
 
 
   
     import os.path
-    if os.path.exists("Position_model_image.png"):
-        os.remove("Position_model_image.png")
+    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
+        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
 
-    fig.savefig("Position_model_image.png")
+    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
     return render_template("output_implementation.html",Longitude = Longitude,Latitude = Latitude,
 	Length=Crimelen,Radius = Radius, Crimecount = Crimecount, Crime = Crimetopass,

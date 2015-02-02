@@ -64,6 +64,7 @@
         <p></p>
         <p></p>
         <h3>Your {{Crime}} Reduction Was Successful In:</h3>
+        
         <ul class = 'list-unstyled'>{% for name in Lower %}
         <li><h4><font color = 'yellow'>{{name}}</font></h4></li>
         {% endfor %}</ul>
@@ -84,7 +85,7 @@
  
       <div class= "media">
        <div class = "media-center">
-         <img class="center-block" src = "{{url_for('return_image',filename='Position_model_image.png')}}" width = "450" height = "300" align = "middle">
+         <img class="center-block" src = "{{url_for('return_image',filename='img/Position_model_image.png')}}" width = "450" height = "300" align = "middle">
        </div>
       </div>
       
@@ -94,7 +95,7 @@
         </p>
       </div>
       
-      <div class = "start-template text-center" style = 'margin-bottom:30px'>
+     <!-- <div class = "start-template text-center" style = 'margin-bottom:30px'>
         <h4> Here Are All The Crimes 12 Months After Your Implementation</h4>
       </div>
     
@@ -113,9 +114,9 @@
         src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
     </script>
 
-    <script>
+    <script>-->
 
-	var planes = {{LatLongList|tojson}};
+	<!--var planes = {{LatLongList|tojson}};
 
         var map = L.map('map').setView([{{Latitude}},{{Longitude}}], 14);
         mapLink = 
@@ -132,7 +133,7 @@
 				.addTo(map);
 		}
                
-    </script>
+    </script>-->
 
      </div><!-- /.container -->
 

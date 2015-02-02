@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 def Watchout(Address,Radius,Crime):
     
     from flask import render_template, request
@@ -171,15 +170,9 @@ def Watchout(Address,Radius,Crime):
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
 	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
 		monthshigher.append(i)
-	if (Radpred + 1.96 * np.sqrt(Radmse)) < (Allpred - 1.06 * np.sqrt(Allmse)):
+	if (Radpred + 1.96 * np.sqrt(Radmse)) < (Allpred - 1.96 * np.sqrt(Allmse)):
 		monthslower.append(i)
-		
-    for i in range (0,len(monthshigher)):
-	Dicthigher.append(Monthdict.get(monthshigher[i]))
-	
 
-    for i in range (0,len(monthslower)):
-	Dictlower.append(Monthdict.get(monthslower[i]))
     
     Spring = [3,4,5,15,16,17,27,28,29]
     Summer = [6,7,8,18,19,20,30,31,32]
@@ -238,12 +231,14 @@ def Watchout(Address,Radius,Crime):
     if not HigherSeasons:
 	HigherSeasons.append("Your crime's rate is, on average, not higher than Boston's Average")
     
+    
     import os.path
-    if os.path.exists("Position_model_image.png"):
-        os.remove("Position_model_image.png")
+    if os.path.exists("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png"):
+        os.remove("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
     
 
-    fig.savefig("Position_model_image.png")
+    fig.savefig("/Users/Jenks/Desktop/Insight_Website/app/static/img/Position_model_image.png")
+    
     
     
     return render_template("output_watchout.html",Longitude = Longitude,Latitude=Latitude,

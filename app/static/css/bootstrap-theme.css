@@ -4,7 +4,13 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-
+.full{
+  background: url('/static/img/police2.png') no-repeat center center fixed;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;;  
+}
 .btn-default,
 .btn-primary,
 .btn-success,

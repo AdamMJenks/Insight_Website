@@ -65,11 +65,11 @@
         <h3>{{Crime}} Reduction Was Successful In:</h3>
         
         <ul class = 'list-unstyled'>{% for name in Lower %}
-        <li><h4><font color = 'yellow'>{{name}}</font></h4></li>
+        <li><h4><font color = 'white' style = 'bold'>{{name}}</font></h4></li>
         {% endfor %}</ul>
         <h3>Average {{Crime}} Was Still Greater In:</h3>
         <ul class = 'list-unstyled'>{% for lowername in Higher %}
-        <li><h4><font color = 'yellow'>{{lowername}}</font></h4></li>
+        <li><h4><font color = 'white' style = 'bold'>{{lowername}}</font></h4></li>
         {% endfor %}</ul>
     </div>
     
@@ -85,12 +85,12 @@
       
       <div class = "start-template text-center" style = 'margin-bottom:50px'>
         <h5>{{Crime}} trend over the 12 months post crime implementation</h5>
-        <p><font color = 'Blue'>Blue</font> indicates the confidence for your selected area's crime rates<br>
-        <font color = 'Red'>Red</font> indicates the confidence for all of Boston's crime rates<br>
+        <p><font color = 'Blue'>Blue</font><font color ='white'> indicates the confidence for your selected area's crime rates</font><br>
+        <font color = 'Red'>Red</font><font color ='white'> indicates the confidence for all of Boston's crime rates</font><br>
         </p>
       </div>
       
-     <!-- <div class = "start-template text-center" style = 'margin-bottom:30px'>
+     <div class = "start-template text-center" style = 'margin-bottom:30px'>
         <h4> Here Are All The Crimes 12 Months After Your Implementation</h4>
       </div>
     
@@ -109,9 +109,9 @@
         src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
     </script>
 
-    <script>-->
+    <script>
 
-	<!--var planes = {{LatLongList|tojson}};
+	var planes = {{LatLongList|tojson}};
 
         var map = L.map('map').setView([{{Latitude}},{{Longitude}}], 14);
         mapLink = 
@@ -128,7 +128,7 @@
 				.addTo(map);
 		}
                
-    </script>-->
+    </script>
 
      </div><!-- /.container -->
 

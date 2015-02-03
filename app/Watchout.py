@@ -170,9 +170,9 @@ def Watchout(Address,Radius,Crime):
     for i in range(1,36):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
-	if (Radpred - 1.5 * np.sqrt(Radmse)) > (Allpred + 1.5 * np.sqrt(Allmse)):
+	if (Radpred - 1.96 * np.sqrt(Radmse)) > (Allpred + 1.96 * np.sqrt(Allmse)):
 		monthshigher.append(i)
-	if (Radpred + 1.5 * np.sqrt(Radmse)) < (Allpred - 1.5 * np.sqrt(Allmse)):
+	if (Radpred + 1.96* np.sqrt(Radmse)) < (Allpred - 1.96 * np.sqrt(Allmse)):
 		monthslower.append(i)
 
     

@@ -10,6 +10,8 @@ def Watchout(Address,Radius,Crime):
     import urllib
     import json
     import re
+    import os
+    import random
     import pprint
     import csv
     from Whole_sets import Monetary, Vice_Crimes, Violent, Nonviolent, Vehicular, Theft
@@ -145,20 +147,31 @@ def Watchout(Address,Radius,Crime):
     plt.fill(np.concatenate([wholexrand, wholexrand[::-1]]),
             np.concatenate([WholeY_pred - wholesigma,
                            (WholeY_pred + wholesigma)[::-1]]),
-            alpha=.01, facecolor = 'red',ec='None', label='95% confidence interval')
+            alpha=.5, facecolor = 'grey',ec='None', label='95% confidence interval')
    
    
     plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
     plt.fill(np.concatenate([xrand, xrand[::-1]]),
             np.concatenate([modely_pred - sigma,
                            (modely_pred + sigma)[::-1]]),
-            alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
+            alpha=.5, facecolor = 'blue', ec='None', label='95% confidence interval')
     
     
     plt.xlabel("Month's After January 2012")
     plt.xlim(1,36)
     plt.ylabel('Relative Number of Incidents')
     
+    Figurenumber = str(random.randint(1,200))
+    Figurename = Figurenumber + ".png"
+    
+    if os.path.exists(os.path.join("./app/static/img/", Figurename)):
+        os.remove(os.path.join("./app/static/img/",Figurename))
+    
+
+    fig.savefig(os.path.join("./app/static/img/", Figurename))
+    fig.clf()
+
+        
     
     
     monthslower = []
@@ -167,6 +180,10 @@ def Watchout(Address,Radius,Crime):
     Dicthigher = []
     Dictlower = []
     
+    
+    
+     
+    
     for i in range(1,36):
 	Radpred, Radmse = RadiusG.predict(i,eval_MSE=True)
 	Allpred, Allmse = AllG.predict(i,eval_MSE=True)
@@ -174,6 +191,31 @@ def Watchout(Address,Radius,Crime):
 		monthshigher.append(i)
 	if (Radpred + 1.96* np.sqrt(Radmse)) < (Allpred - 1.96 * np.sqrt(Allmse)):
 		monthslower.append(i)
+		
+    Difference= []
+    Xaxiscount = range(1,36)
+    
+    for i in range(1,36):
+	Radpred = RadiusG.predict(i)
+	Allpred = AllG.predict(i)
+	Difference.append((Radpred)/(Allpred))
+	
+    plt.bar(Xaxiscount,Difference,color='black')
+    plt.xlim(1,36)
+    plt.ylim(0.5,1.5)
+    plt.axhline(1,color='red',linewidth=3)
+    plt.xlabel("Months After January, 2012")
+    plt.ylabel("Ratio of Crime Within Radius To Boston Crime")
+    
+    Figurenumber = str(random.randint(201,400))
+    Figurename2 = Figurenumber + ".png"
+    
+    if os.path.exists(os.path.join("./app/static/img/", Figurename2)):
+        os.remove(os.path.join("./app/static/img/",Figurename2))
+    
+
+    fig.savefig(os.path.join("./app/static/img/", Figurename2))
+    
 
     
     Spring = [3,4,5,15,16,17,27,28,29]
@@ -228,23 +270,15 @@ def Watchout(Address,Radius,Crime):
 	HigherSeasons.append('Winter')
 
     if not LowerSeasons:
-	LowerSeasons.append("Your crime's rate is no lower than Boston's Average")
+	LowerSeasons.append("Average rate is no lower than Boston's Average")
     
     if not HigherSeasons:
-	HigherSeasons.append("Your crime's rate is no higher than Boston's Average")
-    
-    
-    import os.path
-    if os.path.exists("./app/static/img/Position_model_image.png"):
-        os.remove("./app/static/img/Position_model_image.png")
-    
-
-    fig.savefig("./app/static/img/Position_model_image.png")
-    
+	HigherSeasons.append("Average rate is no higher than Boston's Average")
     
     
     return render_template("output_watchout.html",Longitude = Longitude,Latitude=Latitude,
 	Length=Crimelen,Radius = Radius,Crimecount = Crimecount, Crime = Crimetopass,
 	Higher = Dicthigher, Lower = Dictlower,	HigherSeasons = HigherSeasons,
 	LowerSeasons = LowerSeasons, FallScore = FallScore, SpringScore = SpringScore,
-	SummerScore = SummerScore, WinterScore = WinterScore, LatLongList=LatLongList)
+	SummerScore = SummerScore, WinterScore = WinterScore, LatLongList=LatLongList,
+	Figurename = Figurename, Figurename2=Figurename2)

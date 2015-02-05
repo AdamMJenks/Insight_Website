@@ -5,6 +5,9 @@ from Geocode import googleGeocoding
 from Implementation import Implement
 from Watchout import Watchout
 
+
+
+@app.route('/')
 @app.route('/starter')
 def start_page():
 	return render_template("starter.html")

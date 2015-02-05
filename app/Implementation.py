@@ -11,6 +11,8 @@ def Implement(Address,Radius,Crime,Year,Month):
     import json
     import re
     import pprint
+    import os
+    import random
     import csv
     from Whole_sets import Monetary, Vice_Crimes, Violent, Nonviolent, Vehicular, Theft
     from Implementation import Implement
@@ -152,14 +154,14 @@ def Implement(Address,Radius,Crime,Year,Month):
     plt.fill(np.concatenate([wholexrand, wholexrand[::-1]]),
             np.concatenate([WholeY_pred - wholesigma,
                            (WholeY_pred + wholesigma)[::-1]]),
-            alpha=.01, facecolor = 'red',ec='None', label='95% confidence interval')
+            alpha=.5, facecolor = 'grey',ec='None', label='95% confidence interval')
    
    
     plt.plot(X_train, y_train, 'k.', markersize=8, label='Observations')
     plt.fill(np.concatenate([xrand, xrand[::-1]]),
             np.concatenate([modely_pred - sigma,
                            (modely_pred + sigma)[::-1]]),
-            alpha=.01, facecolor = 'blue', ec='None', label='95% confidence interval')
+            alpha=.5, facecolor = 'blue', ec='None', label='95% confidence interval')
     
     xmarkers = [Month,Month+1,Month+2,Month+3,Month+4,Month+5,Month+6,Month+7,Month+8,Month+9,Month+10,Month+11,Month+12]
     labels = ['0','1','2','3','4','5','6','7','8','9','10','11','12']
@@ -167,6 +169,15 @@ def Implement(Address,Radius,Crime,Year,Month):
     plt.xlim(Month,Month+12)
     plt.xticks(xmarkers,labels)
     plt.ylabel('Relative Number of Incidents')
+    
+    Figurenumber = str(random.randint(1,200))
+    Figurename = Figurenumber + ".png"
+    
+    if os.path.exists(os.path.join("./app/static/img/", Figurename)):
+        os.remove(os.path.join("./app/static/img/",Figurename))
+    
+
+    fig.savefig(os.path.join("./app/static/img/", Figurename))
     
     
     monthtoprint = Month
@@ -196,17 +207,32 @@ def Implement(Address,Radius,Crime,Year,Month):
     if not Dicthigher:
 	Dicthigher.append("Your crime remained at Boston's average")
     
+    Difference = []
+    Xaxiscount = range(int(Month),37)
+    
+    for i in range(int(Month),37):
+	Radpred = RadiusG.predict(i)
+	Allpred = AllG.predict(i)
+	Difference.append((Radpred)/(Allpred))
+	
+    plt.bar(Xaxiscount,Difference,color='black')
+    plt.xlim(Month,Month+12)
+    plt.xticks(xmarkers,labels)
+    plt.ylim(0.5,1.5)
+    plt.axhline(1,color='red',linewidth=3)
+    plt.xlabel("Months After Implementation")
+    plt.ylabel("Ratio of Crime Within Radius To Boston Crime")
+    
+    Figurenumber = str(random.randint(201,400))
+    Figurename2 = Figurenumber + ".png"
+    
+    if os.path.exists(os.path.join("./app/static/img/", Figurename2)):
+        os.remove(os.path.join("./app/static/img/",Figurename2))
     
 
-
-  
-    import os.path
-    if os.path.exists("./app/static/img/Position_model_image.png"):
-        os.remove("./app/static/img/Position_model_image.png")
-    
-
-    fig.savefig("./app/static/img/Position_model_image.png")
+    fig.savefig(os.path.join("./app/static/img/", Figurename2))
     
     return render_template("output_implementation.html",Longitude = Longitude,Latitude = Latitude,
 	Length=Crimelen,Radius = Radius, Crimecount = Crimecount, Crime = Crimetopass,
-	Higher = Dicthigher,Lower = Dictlower, LatLongList = LatLongList)
+	Higher = Dicthigher,Lower = Dictlower, LatLongList = LatLongList,Figurename=Figurename,
+	Figurename2=Figurename2)

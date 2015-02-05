@@ -9,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+    
     <link rel="icon" href="../../favicon.ico">
 
     <title>TopCop: Crime Intevention Analyzer</title>
@@ -75,59 +79,71 @@
   </div> <!-- /.container-->
     
  
-      <div class= "media">
+      <div class= "media col-md-6">
        <div class = "media-center">
-         <img class="center-block" src = "{{url_for('return_image',filename='img/Position_model_image.png')}}" width = "450" height = "300" align = "middle">
+         <img class="center-block" src = "{{url_for('return_image',filename='img/'+Figurename)}}" width = "450" height = "300" align = "middle">
        </div>
-      </div>
-      
-      <div class = "start-template text-center">
-        <h5>{{Crime}} trend over the 12 months post crime implementation</h5>
+       <div class = "start-template text-center" style = "background-color:black;padding:5px">
+        <h5>{{Crime}} trends over the last 3 years</h5>
         <p><font color = 'Blue'>Blue</font><font color = 'white'> indicates the confidence for your selected area's crime rates</font><br>
-        <font color = 'Red'>Red</font><font color = 'white'> indicates the confidence for all of Boston's crime rates</font></p> 
+        <font color = 'Grey'>Red</font><font color = 'white'> indicates the confidence for all of Boston's crime rates</font></p> 
         </p>
       </div>
+      </div>
+      
+      <div class= "media col-md-6">
+       <div class = "media-center">
+         <img class="center-block" src = "{{url_for('return_image',filename='img/'+Figurename2)}}" width = "450" height = "300" align = "middle">
+       </div>
+       <div class = "start-template text-center" style = "background-color:black;padding:5px">
+        <h5> Relative {{Crime}} rates (Area:Boston) <br>over the last 3 years</h5>
+        <p><font color = 'Red'>Red</font><font color = 'white'> indicates a 1:1 ratio of crime rates</font></p> 
+        </p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      </div>
+      
+     
      
       <div class = "start-template text-center" style = 'margin-bottom:30px'>
+        <h4></h4>
         <h4> Here Are All The {{Crime}} Incidents Over the Last 3 Years</h4>
       </div>
   
   
-      <link 
-        rel="stylesheet" 
-        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
-    />
+      <div id="map" style="width: 600px; height: 400px; margin: auto; margin-bottom:50px"></div>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiYWRhbW1qZW5rcyIsImEiOiI2VjctbFZFIn0.5UxWHJF4VY9odmXxCu7fGA';
+    var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+        .setView([{{Latitude}},{{Longitude}}], 14);
+        
+    var planes = {{LatLongList|tojson}};
+
+    var markers = new L.MarkerClusterGroup();
+
+    for (var i = 0; i < planes.length; i++) {
+        var a = planes[i];
+        var title = a[0];
+        var marker = L.marker(new L.LatLng(a[1], a[2]), {
+            icon: L.mapbox.marker.icon({'marker-symbol': 'star', 'marker-color': '0044FF'}),
+            title: title
+        });
+        marker.bindPopup(title);
+        markers.addLayer(marker);
+    }
+
+    map.addLayer(markers);
+</script>
 
 
-    <div id="map" style="width: 600px; height: 400px; margin: auto"></div>
 
-    <script
-        src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
-    </script>
-     <script>
-
-	var planes = {{LatLongList|tojson}};
-
-        var map = L.map('map').setView([{{Latitude}},{{Longitude}}], 14);
-        mapLink = 
-            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-        L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; ' + mapLink + ' Contributors',
-            maxZoom: 18,
-            }).addTo(map);
-
-		for (var i = 0; i < planes.length; i++) {
-			marker = new L.marker([planes[i][1],planes[i][2]])
-				.bindPopup(planes[i][0])
-				.addTo(map);
-		}
-               
-    </script>
-
-
-      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-      <script src="static/js/bootstrap.min.js"></script>
 
 
      </div><!-- /.container -->

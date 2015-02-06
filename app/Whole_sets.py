@@ -8,7 +8,8 @@ import re
 import pprint
 import csv
 
-
+###Each of the following functions prepares training sets for all of boston's crime data, not within a radius
+### The name of each function is the kind of crime that it calls from the sql database
 def Nonviolent():
     con = mdb.connect('localhost', 'root', 'sqlbacon', 'Crime_data') #host, user, password, #database
     cur = con.cursor()

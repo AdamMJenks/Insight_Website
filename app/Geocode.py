@@ -7,6 +7,7 @@ import re
 import pprint
 import csv
 
+#The functions takes an address, queries the google api with the address and returns a json
 
 def googleGeocoding(address):
     """This function takes an address and returns the latitude and longitude from the Google geocoding API."""

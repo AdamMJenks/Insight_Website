@@ -43,7 +43,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/starter">Home</a></li>
-            <li><a href="/about">About</a></li>
+            <li><a href="#about">About</a></li>
             
           </ul>
         </div><!--/.nav-collapse -->
@@ -53,52 +53,25 @@
 
 <br><br>
 
-  <div class="container">
+  <div class="container" style = 'background-color:black'>
 
-    <div class="starter-template text-center">
-        <h2>TopCop: Crime Analysis Tool</h2>
+    <div class="starter-template" >
+        <h2>About The App: </h2>
     </div>
+        <h5><font color='white' >TopCop was developed and implemeneted by Adam Jenkins.  Data was obtained from the City of Boston's Crime Incident Report
+        for the years of 2012-2014.  Geolocation data was used based purely on the latitude and longitude given by the reporting
+        incident officer and not with the X,Y coordinates.  Additionaly use of Google's geolocation API was used to identify the
+        latitude/longitude of the given address.  Model predictions were made using Gaussian process regression using Scikit-Learn's 
+        module.  This work was in association with the Insight Data Science program.  All associated code and information on the
+        creator can be accessed at the following Github and LinkedIn pages.</font></h5>
+        <a href="http://linkedin.com/in/AdamMJenks" role="button" class="btn btn-success btn-large" style='background-color:darkgrey'>LinkedIn</a>
+        <a href="http://github.com/AdamMJenks/TopCop-Website" role="button" class="btn btn-success btn-large" style='background-color:darkgrey'>Github</a>
+    
 
-    <div class = "container text-center">
-      <h4>Please Enter The Following Information About Your Area of Interest </h4>
-        <form  id="all" action = "/watchout" method="GET">
-        <div class="form-group">
-          <div class="text-center">
-            <p></p>
-          <label for="Address">Address (centralized address)</label>
-          <div>
-          <input type="text-center" required = "true" id="Address" name='Address' placeholder="Enter Address Here">
-          </div>
-          <div class="text-center">
-            <p></p>
-           <label for="Radius">Radius of Area (0.5-5 km)</label>
-           <div>
-          <input type="text-center" required = 'true' id="Radius" name='Radius' placeholder="Radius">
-           </div>
-          </div>
-        </div>
-          
-        
-          <p></p>
-          <label for="all">Type of Crime Targeted</label>
-           <select class="form-control center-block" style ="width:140px" form="all" name="crime">
-              <option value="Violent">Violent Crime</option>
-              <option value="Nonviolent">Nonviolent Crime</option>
-              <option value="Theft">Theft</option>
-              <option value="Monetary">Monetary</option>
-              <option value="Vehicular">Vehicular</option>
-              <option value="Vice_Crimes">Vice Crimes </option>
-          </select>
-        
-        
-      <p></p>
-      <p></p>
       <p></p>
       <p></p>
    
-        <button type="submit" class="btn btn-default btn-lg center-block" style = 'margin-top: 50px'>
-            Click To Find Out</button>
-    </div>
+        
 
       </form>
     </div>
